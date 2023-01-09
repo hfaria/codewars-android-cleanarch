@@ -9,7 +9,11 @@ class CachedQueryRepository<P, D>(
     private val cacheRepository: CacheRepository<P, D>
 ) {
 
-    fun query(params: P): Output<D> {
+    fun query(params: P, forceUpdate: Boolean = false): Output<D> {
+        if (forceUpdate) {
+            return actuallyQuery(params)
+        }
+
         val cacheOutput = cacheRepository.get(params)
         return when (cacheOutput) {
             is ExpiredOutput -> {

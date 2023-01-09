@@ -46,10 +46,6 @@ class MockCacheRepository: CacheRepository<String, MockData> {
     override fun delete(obj: MockData): Output<Unit> {
         TODO("Not yet implemented")
     }
-
-    override fun prune(count: Int): Output<Unit> {
-        TODO("Not yet implemented")
-    }
 }
 
 class CachedQueryRepositoryTest {
@@ -84,6 +80,28 @@ class CachedQueryRepositoryTest {
         // Test
         val cachedQueryRepository = CachedQueryRepository(queryRepository, cacheRepository)
         val result = cachedQueryRepository.query(id) as SuccessOutput
+        assertEquals(queryData, result.data)
+        assertEquals(queryData, cacheRepository.data[id]!!)
+    }
+
+    @Test
+    fun shouldGetFreshDataIfForceUpdate() {
+        val id = "ID1"
+        val freshScore = 200
+        val oldScore   = 150
+
+        // Query Repo
+        val queryData = MockData(id, freshScore)
+        val queryRepository = MockQueryRepository()
+        queryRepository.data[id] = queryData
+
+        // Cache Repo
+        val cacheRepository = MockCacheRepository()
+        cacheRepository.data[id] = MockData(id, oldScore)
+
+        // Test
+        val cachedQueryRepository = CachedQueryRepository(queryRepository, cacheRepository)
+        val result = cachedQueryRepository.query(id, forceUpdate = true) as SuccessOutput
         assertEquals(queryData, result.data)
         assertEquals(queryData, cacheRepository.data[id]!!)
     }
