@@ -28,6 +28,8 @@ sealed class Output<out T> {
 }
 
 data class SuccessOutput<out T>(val data: T) : Output<T>()
+data class ExpiredOutput<out T>(val data: T) : Output<T>()
+class EmptyOutput<out T>: Output<T>()
 class NotFoundOutput<out T>: Output<T>()
 data class ErrorOutput<out T>(val error: String) : Output<T>()
 data class ThrowableOutput<out T>(val data: Throwable) : Output<T>()

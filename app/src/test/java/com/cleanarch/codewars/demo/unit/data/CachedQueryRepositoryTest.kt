@@ -1,15 +1,14 @@
 package com.cleanarch.codewars.demo.unit.data
 
-import com.cleanarch.codewars.demo.data.NotFoundOutput
-import com.cleanarch.codewars.demo.data.Output
-import com.cleanarch.codewars.demo.data.SuccessOutput
+import com.cleanarch.codewars.demo.data.*
 import com.cleanarch.codewars.demo.data.repository.CacheRepository
 import com.cleanarch.codewars.demo.data.repository.CachedQueryRepository
 import com.cleanarch.codewars.demo.data.repository.Repository
-import junit.framework.Assert.assertTrue
+import junit.framework.Assert.assertEquals
 import org.junit.Test
 
-data class MockData(val id: String)
+const val ALWAYS_EXPIRED = -500
+data class MockData(val id: String, val score: Int = 0, val savedAt: Int = 0)
 
 class MockQueryRepository: Repository<String, MockData> {
 
@@ -29,16 +28,19 @@ class MockCacheRepository: CacheRepository<String, MockData> {
 
     override fun get(params: String): Output<MockData> {
         return data[params]?.let {
-            SuccessOutput(it)
+            if (it.savedAt == ALWAYS_EXPIRED) {
+                ExpiredOutput(it)
+            } else {
+                SuccessOutput(it)
+            }
         } ?: run {
             NotFoundOutput()
         }
     }
 
     override fun put(obj: MockData): Output<Unit> {
-        //data[obj.id] = obj.copy()
-        //return SuccessOutput()
-        TODO("Not yet implemented")
+        data[obj.id] = obj.copy()
+        return EmptyOutput()
     }
 
     override fun delete(obj: MockData): Output<Unit> {
@@ -56,12 +58,34 @@ class CachedQueryRepositoryTest {
     @Test
     fun shouldPrioritizeValidCache() {
         val id = "ID1"
-        val localFreshData  = MockData(id)
         val queryRepository = MockQueryRepository()
         val cacheRepository = MockCacheRepository()
-        cacheRepository.data[id] = localFreshData
+        val cacheData = MockData(id)
+        cacheRepository.data[id] = cacheData
         val cachedQueryRepository = CachedQueryRepository(queryRepository, cacheRepository)
         val result = cachedQueryRepository.query(id) as SuccessOutput
-        assertTrue(result.data.id == id)
+        assertEquals(cacheData, result.data)
+    }
+
+    @Test
+    fun shouldGetFreshDataIfExpiredCache() {
+        val id = "ID1"
+        val freshScore = 200
+        val oldScore   = 150
+
+        // Query Repo
+        val queryData = MockData(id, freshScore)
+        val queryRepository = MockQueryRepository()
+        queryRepository.data[id] = queryData
+
+        // Cache Repo
+        val cacheRepository = MockCacheRepository()
+        cacheRepository.data[id] = MockData(id, oldScore, savedAt = ALWAYS_EXPIRED)
+
+        // Test
+        val cachedQueryRepository = CachedQueryRepository(queryRepository, cacheRepository)
+        val result = cachedQueryRepository.query(id) as SuccessOutput
+        assertEquals(queryData, result.data)
+        assertEquals(queryData, cacheRepository.data[id]!!)
     }
 }
