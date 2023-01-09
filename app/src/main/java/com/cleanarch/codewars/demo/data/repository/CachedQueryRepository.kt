@@ -12,19 +12,20 @@ class CachedQueryRepository<P, D>(
     fun query(params: P): Output<D> {
         val cacheOutput = cacheRepository.get(params)
         return when (cacheOutput) {
-            is SuccessOutput -> {
-                cacheOutput
-            }
             is ExpiredOutput -> {
-                val queryOutput = queryRepository.get(params)
-                if (queryOutput is SuccessOutput) {
-                    cacheRepository.put(queryOutput.data)
-                }
-                return queryOutput
+                actuallyQuery(params)
             }
             else -> {
                 cacheOutput
             }
         }
+    }
+
+    private fun actuallyQuery(params: P): Output<D> {
+        val queryOutput = queryRepository.get(params)
+        if (queryOutput is SuccessOutput) {
+            cacheRepository.put(queryOutput.data)
+        }
+        return queryOutput
     }
 }

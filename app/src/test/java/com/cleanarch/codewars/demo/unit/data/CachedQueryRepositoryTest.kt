@@ -44,7 +44,6 @@ class MockCacheRepository: CacheRepository<String, MockData> {
     }
 
     override fun delete(obj: MockData): Output<Unit> {
-        //data.remove(obj.id)
         TODO("Not yet implemented")
     }
 
