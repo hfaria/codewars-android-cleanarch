@@ -1,5 +1,7 @@
 package com.cleanarch.codewars.demo.data
 
+import com.cleanarch.codewars.demo.data.repository.network.Mapper
+
 /*
     Data class used to encapsulate any response
     to a data request.
@@ -7,12 +9,12 @@ package com.cleanarch.codewars.demo.data
     Could be used by any kind of data source
     to represent the result of a given data request.
  */
-sealed class Output<out T> {
+sealed class Output<T> {
 
-    fun <R> map(mapper: (T) -> (R)): Output<R> {
+    fun <R> map(mapper: Mapper<T, R>): Output<R> {
         return when (this) {
             is SuccessOutput -> {
-                SuccessOutput(mapper.invoke(this.data))
+                SuccessOutput(mapper.map(this.data))
             }
             is NotFoundOutput -> {
                 NotFoundOutput()
@@ -27,9 +29,9 @@ sealed class Output<out T> {
     }
 }
 
-data class SuccessOutput<out T>(val data: T) : Output<T>()
-data class ExpiredOutput<out T>(val data: T) : Output<T>()
-class EmptyOutput<out T>: Output<T>()
-class NotFoundOutput<out T>: Output<T>()
-data class ErrorOutput<out T>(val error: String) : Output<T>()
-data class ThrowableOutput<out T>(val data: Throwable) : Output<T>()
+data class SuccessOutput<T>(val data: T) : Output<T>()
+data class ExpiredOutput<T>(val data: T) : Output<T>()
+class EmptyOutput<T>: Output<T>()
+class NotFoundOutput<T>: Output<T>()
+data class ErrorOutput<T>(val error: String) : Output<T>()
+data class ThrowableOutput<T>(val data: Throwable) : Output<T>()

@@ -1,6 +1,6 @@
 package com.cleanarch.codewars.demo.data.network.retrofit
 
-import com.cleanarch.codewars.demo.data.network.response.NetworkResponse
+import com.cleanarch.codewars.demo.data.Output
 import retrofit2.CallAdapter
 import retrofit2.CallAdapter.Factory
 import retrofit2.Retrofit
@@ -13,7 +13,7 @@ class RemoteResponseCallAdapterFactory : Factory() {
         annotations: Array<Annotation>,
         retrofit: Retrofit
     ): CallAdapter<*, *>? {
-        if (getRawType(returnType) != NetworkResponse::class.java) {
+        if (getRawType(returnType) != Output::class.java) {
             return null
         }
         val bodyType = getParameterUpperBound(0, returnType as ParameterizedType)

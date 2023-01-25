@@ -1,38 +1,39 @@
 package com.cleanarch.codewars.demo.data.network.retrofit
 
+import com.cleanarch.codewars.demo.data.*
 import com.cleanarch.codewars.demo.data.network.response.*
 import retrofit2.*
 import java.lang.reflect.Type
 
 /**
- *  A Retrofit adapter to map Retrofit Response objects into NetworkResponse objects.
+ *  A Retrofit adapter to map Retrofit Response objects into Output objects.
  */
 class RemoteResponseCallAdapter<R>(private val responseType: Type) :
-    CallAdapter<R, NetworkResponse<R>> {
+    CallAdapter<R, Output<R>> {
 
     override fun responseType() = responseType
 
-    override fun adapt(call: Call<R>): NetworkResponse<R> {
+    override fun adapt(call: Call<R>): Output<R> {
         return try {
             val retrofitResponse = call.execute()
-            mapIntoNetworkResponse<R>(retrofitResponse)
+            mapIntoOutput<R>(retrofitResponse)
         } catch (throwable: Throwable) {
-            NetworkExceptionResponse(-1, throwable.message)
+            ThrowableOutput(throwable)
         }
     }
 
-    private fun <R> mapIntoNetworkResponse(response: Response<R>): NetworkResponse<R> {
+    private fun <R> mapIntoOutput(response: Response<R>): Output<R> {
         val code = response.code()
         return if (response.isSuccessful) {
             val body = response.body()
             if (body == null || code == 204) {
-                NetworkEmptyResponse(code)
+                EmptyOutput()
             } else {
-                NetworkSuccessResponse(code, body)
+                SuccessOutput(body)
             }
         } else {
             return if (code == 404) {
-                NetworkNotFoundResponse(code)
+                NotFoundOutput()
             } else {
                 val msg = response.errorBody()?.string()
                 val errorMsg = if (msg.isNullOrEmpty()) {
@@ -40,7 +41,7 @@ class RemoteResponseCallAdapter<R>(private val responseType: Type) :
                 } else {
                     msg
                 }
-                NetworkErrorResponse(code, errorMsg)
+                ErrorOutput(errorMsg)
             }
         }
     }
