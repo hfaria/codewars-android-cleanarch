@@ -105,4 +105,24 @@ class CachedQueryRepositoryTest {
         assertEquals(queryData, result.data)
         assertEquals(queryData, cacheRepository.data[id]!!)
     }
+
+    @Test
+    fun shouldGetFreshDataIfCacheMiss() {
+        val id = "ID1"
+        val freshScore = 200
+
+        // Query Repo
+        val queryData = MockData(id, freshScore)
+        val queryRepository = MockQueryRepository()
+        queryRepository.data[id] = queryData
+
+        // Cache Repo
+        val cacheRepository = MockCacheRepository()
+
+        // Test
+        val cachedQueryRepository = CachedQueryRepository(queryRepository, cacheRepository)
+        val result = cachedQueryRepository.query(id) as SuccessOutput
+        assertEquals(queryData, result.data)
+        assertEquals(queryData, cacheRepository.data[id]!!)
+    }
 }
