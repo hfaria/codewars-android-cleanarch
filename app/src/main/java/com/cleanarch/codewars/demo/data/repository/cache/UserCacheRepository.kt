@@ -1,12 +1,14 @@
 package com.cleanarch.codewars.demo.data.repository.cache
 
 import com.cleanarch.codewars.demo.data.EmptyOutput
+import com.cleanarch.codewars.demo.data.ExpiredOutput
 import com.cleanarch.codewars.demo.data.Output
+import com.cleanarch.codewars.demo.data.SuccessOutput
 import com.cleanarch.codewars.demo.data.repository.CacheStorageRepository
 import com.cleanarch.codewars.demo.data.repository.MutableRepository
 import com.cleanarch.codewars.demo.domain.User
 
-data class CachePolicy(val limit: Int? = null)
+data class CachePolicy(val refreshRate: Long? = null, val limit: Int? = null)
 
 class UserCacheRepository(
     private val storage: CacheStorageRepository<String, User>,
@@ -22,6 +24,17 @@ class UserCacheRepository(
     }
 
     override fun get(params: String): Output<User> {
-        TODO("Not yet implemented")
+        val result = storage.get(params)
+
+        if (result is SuccessOutput && cachePolicy.refreshRate != null) {
+            val timeNow = System.currentTimeMillis()
+            val elapsed = timeNow - result.data.timestamp
+
+            if (elapsed > cachePolicy.refreshRate) {
+                return ExpiredOutput(result.data)
+            }
+        }
+
+        return result
     }
 }
