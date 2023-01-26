@@ -1,12 +1,12 @@
 package com.cleanarch.codewars.demo.data.repository.cache
 
 import com.cleanarch.codewars.demo.data.*
-import com.cleanarch.codewars.demo.data.repository.CacheRepository
+import com.cleanarch.codewars.demo.data.repository.MutableRepository
 import com.cleanarch.codewars.demo.data.repository.Repository
 
 class CachedQueryRepository<P, D>(
     private val queryRepository: Repository<P, D>,
-    private val cacheRepository: CacheRepository<P, D>
+    private val cacheRepository: MutableRepository<P, D>
 ) {
 
     fun query(params: P, forceUpdate: Boolean = false): Output<D> {

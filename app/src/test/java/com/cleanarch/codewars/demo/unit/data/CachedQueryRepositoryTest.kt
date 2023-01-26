@@ -1,7 +1,7 @@
 package com.cleanarch.codewars.demo.unit.data
 
 import com.cleanarch.codewars.demo.data.*
-import com.cleanarch.codewars.demo.data.repository.CacheRepository
+import com.cleanarch.codewars.demo.data.repository.MutableRepository
 import com.cleanarch.codewars.demo.data.repository.cache.CachedQueryRepository
 import com.cleanarch.codewars.demo.data.repository.Repository
 import junit.framework.Assert.assertEquals
@@ -23,7 +23,7 @@ class MockQueryRepository: Repository<String, MockData> {
     }
 }
 
-class MockCacheRepository: CacheRepository<String, MockData> {
+class MockCacheRepository: MutableRepository<String, MockData> {
     val data: HashMap<String, MockData> = hashMapOf()
 
     override fun get(params: String): Output<MockData> {
