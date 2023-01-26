@@ -1,4 +1,4 @@
-package com.cleanarch.codewars.demo.data.repository.db.entity
+package com.cleanarch.codewars.demo.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

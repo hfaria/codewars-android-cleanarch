@@ -5,9 +5,9 @@ import androidx.room.Room
 import com.cleanarch.codewars.demo.data.network.retrofit.CODEWARS_ENDPOINT
 import com.cleanarch.codewars.demo.data.network.retrofit.CodeWarsApi
 import com.cleanarch.codewars.demo.data.network.retrofit.RemoteResponseCallAdapterFactory
-import com.cleanarch.codewars.demo.data.repository.db.dao.UserDao
-import com.cleanarch.codewars.demo.data.repository.db.db.AppDatabase
-import com.cleanarch.codewars.demo.data.repository.db.db.DATABASE_NAME
+import com.cleanarch.codewars.demo.data.db.dao.UserDao
+import com.cleanarch.codewars.demo.data.db.db.AppDatabase
+import com.cleanarch.codewars.demo.data.db.db.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

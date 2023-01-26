@@ -2,7 +2,7 @@ package com.cleanarch.codewars.demo.unit.data
 
 import com.cleanarch.codewars.demo.data.*
 import com.cleanarch.codewars.demo.data.repository.CacheRepository
-import com.cleanarch.codewars.demo.data.repository.CachedQueryRepository
+import com.cleanarch.codewars.demo.data.repository.cache.CachedQueryRepository
 import com.cleanarch.codewars.demo.data.repository.Repository
 import junit.framework.Assert.assertEquals
 import org.junit.Test

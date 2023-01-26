@@ -1,9 +1,9 @@
-package com.cleanarch.codewars.demo.data.repository.db.db
+package com.cleanarch.codewars.demo.data.db.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.cleanarch.codewars.demo.data.repository.db.dao.UserDao
-import com.cleanarch.codewars.demo.data.repository.db.entity.UserEntity
+import com.cleanarch.codewars.demo.data.db.dao.UserDao
+import com.cleanarch.codewars.demo.data.db.entity.UserEntity
 
 const val DATABASE_VERSION = 1
 const val DATABASE_NAME = "codewars-database"

@@ -3,8 +3,8 @@ package com.cleanarch.codewars.demo
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.cleanarch.codewars.demo.data.repository.db.db.AppDatabase
-import com.cleanarch.codewars.demo.data.repository.db.entity.UserEntity
+import com.cleanarch.codewars.demo.data.db.db.AppDatabase
+import com.cleanarch.codewars.demo.data.db.entity.UserEntity
 import kotlinx.coroutines.runBlocking
 
 import org.junit.Test

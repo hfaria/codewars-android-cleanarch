@@ -1,9 +1,8 @@
-package com.cleanarch.codewars.demo.data.repository.db.dao
+package com.cleanarch.codewars.demo.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.cleanarch.codewars.demo.data.repository.db.entity.UserEntity
-import com.hfaria.portfolio.codewars.persistence.local.dao.BaseDao
+import com.cleanarch.codewars.demo.data.db.entity.UserEntity
 
 @Dao
 interface UserDao: BaseDao<UserEntity> {

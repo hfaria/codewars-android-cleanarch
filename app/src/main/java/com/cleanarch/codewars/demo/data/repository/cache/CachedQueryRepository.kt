@@ -1,8 +1,10 @@
-package com.cleanarch.codewars.demo.data.repository
+package com.cleanarch.codewars.demo.data.repository.cache
 
 import com.cleanarch.codewars.demo.data.ExpiredOutput
 import com.cleanarch.codewars.demo.data.Output
 import com.cleanarch.codewars.demo.data.SuccessOutput
+import com.cleanarch.codewars.demo.data.repository.CacheRepository
+import com.cleanarch.codewars.demo.data.repository.Repository
 
 class CachedQueryRepository<P, D>(
     private val queryRepository: Repository<P, D>,

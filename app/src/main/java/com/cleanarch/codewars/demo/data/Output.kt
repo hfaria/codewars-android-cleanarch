@@ -1,6 +1,6 @@
 package com.cleanarch.codewars.demo.data
 
-import com.cleanarch.codewars.demo.data.repository.network.Mapper
+import com.cleanarch.codewars.demo.data.repository.Mapper
 
 /*
     Data class used to encapsulate any response
