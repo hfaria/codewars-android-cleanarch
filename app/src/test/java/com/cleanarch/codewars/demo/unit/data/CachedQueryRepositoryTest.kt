@@ -42,10 +42,6 @@ class MockCacheRepository: MutableRepository<String, MockData> {
         data[obj.id] = obj.copy()
         return EmptyOutput()
     }
-
-    override fun delete(obj: MockData): Output<Unit> {
-        TODO("Not yet implemented")
-    }
 }
 
 class CachedQueryRepositoryTest {
