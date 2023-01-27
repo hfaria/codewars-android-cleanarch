@@ -6,8 +6,9 @@ import com.cleanarch.codewars.demo.data.repository.cache.CachedQueryRepository
 
 class SearchUserUseCase(
     private val repository: CachedQueryRepository<String, User>
-): BaseUseCase<String , User>() {
-    override fun invoke(username: String): Output<User> {
+): UseCase<String , User> {
+
+    override fun run(username: String): Output<User> {
         if (username.isEmpty()) {
             return ErrorOutput("ERROR: Empty username")
         } else if (username.length < 3) {

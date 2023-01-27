@@ -1,19 +1,15 @@
 package com.cleanarch.codewars.demo.domain
 
 import com.cleanarch.codewars.demo.data.ErrorOutput
-import com.cleanarch.codewars.demo.data.Output
 import com.cleanarch.codewars.demo.data.SuccessOutput
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-abstract class BaseUseCase<in INPUT, DATA> {
-
-    protected abstract fun invoke(input: INPUT): Output<DATA>
-
-    open suspend fun run(input: INPUT, port: OutputPort<DATA>) {
+class UseCaseRunner<INPUT, DATA> {
+    suspend fun run(useCase: UseCase<INPUT, DATA>, input: INPUT, port: OutputPort<DATA>) {
         port.onStartLoading()
         val response = withContext(Dispatchers.IO) {
-            invoke(input)
+            useCase.run(input)
         }
         port.onStopLoading()
 

@@ -2,6 +2,7 @@ package com.cleanarch.codewars.demo.ui.search_user
 
 import androidx.lifecycle.*
 import com.cleanarch.codewars.demo.domain.SearchUserUseCase
+import com.cleanarch.codewars.demo.domain.UseCaseRunner
 import com.cleanarch.codewars.demo.domain.User
 import com.cleanarch.codewars.demo.ui.base.BasePresenter
 import com.cleanarch.codewars.demo.ui.base.BaseScreenState
@@ -33,16 +34,16 @@ class SearchUserPresenter(
 
 // Google ViewModel as a "view-controller"
 class SearchUserController @Inject constructor(
+    private val state: SearchUserScreenState,
+    private val routes: SearchUserRoutes,
+    private val presenter: SearchUserPresenter,
     private val useCase: SearchUserUseCase,
+    private val runner: UseCaseRunner<String, User>
 ) : ViewModel() {
-
-    val state = SearchUserScreenState()
-    val routes = SearchUserRoutes()
-    private val presenter = SearchUserPresenter(state, routes)
 
     fun handleUserSearch(username: String) {
         viewModelScope.launch {
-            useCase.run(username, presenter)
+            runner.run(useCase, username, presenter)
         }
     }
 }
