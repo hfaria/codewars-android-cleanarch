@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CodwarsCleanArchDemo</string>
+    <string name="et_username_hint">Search an username</string>
+    <string name="btn_username_search">Search</string>
 </resources>

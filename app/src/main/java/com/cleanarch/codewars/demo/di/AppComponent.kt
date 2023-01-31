@@ -5,13 +5,17 @@ import com.cleanarch.codewars.demo.android.CodeWarsApp
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [
         AndroidInjectionModule::class,
-        DataLayerModule::class
+        AndroidSupportInjectionModule::class,
+        ViewModelBuilderModule::class,
+        DataLayerModule::class,
+        SearchUserModule::class,
     ]
 )
 interface AppComponent {
@@ -25,5 +29,4 @@ interface AppComponent {
     }
 
     fun inject(codeWarsApp: CodeWarsApp)
-
 }

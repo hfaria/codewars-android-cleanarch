@@ -1,12 +1,9 @@
 package com.cleanarch.codewars.demo.ui.search_user
 
 import androidx.lifecycle.*
-import com.cleanarch.codewars.demo.domain.SearchUserUseCase
-import com.cleanarch.codewars.demo.domain.UseCaseRunner
 import com.cleanarch.codewars.demo.domain.User
 import com.cleanarch.codewars.demo.ui.base.BasePresenter
 import com.cleanarch.codewars.demo.ui.base.BaseScreenState
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchUserRoutes {
@@ -20,7 +17,9 @@ class SearchUserRoutes {
 }
 
 // "ViewModel" Design Pattern
-class SearchUserScreenState: BaseScreenState()
+class SearchUserScreenState: BaseScreenState() {
+    val username = MutableLiveData<String>()
+}
 
 class SearchUserPresenter(
     state: SearchUserScreenState,
@@ -33,17 +32,20 @@ class SearchUserPresenter(
 }
 
 // Google ViewModel as a "view-controller"
-class SearchUserController @Inject constructor(
-    private val state: SearchUserScreenState,
-    private val routes: SearchUserRoutes,
-    private val presenter: SearchUserPresenter,
-    private val useCase: SearchUserUseCase,
-    private val runner: UseCaseRunner<String, User>
+class SearchUserViewModel @Inject constructor(
 ) : ViewModel() {
 
-    fun handleUserSearch(username: String) {
-        viewModelScope.launch {
-            runner.run(useCase, username, presenter)
-        }
+    val state = SearchUserScreenState()
+    val routes = SearchUserRoutes()
+    private val presenter = SearchUserPresenter(state, routes)
+
+    fun handleUserSearch() {
+        //viewModelScope.launch {
+        //    runner.run(useCase, state.username.value.orEmpty(), presenter)
+        //}
+        presenter.onSuccess(User(
+            "UNAME",
+            "FOOBAR"
+        ))
     }
 }
